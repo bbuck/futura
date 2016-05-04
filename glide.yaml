@@ -1,0 +1,5 @@
+package: github.com/bbuck/futura
+import:
+- package: github.com/spf13/cobra
+- package: github.com/spf13/viper
+- package: github.com/spf13/pflag
