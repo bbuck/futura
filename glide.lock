@@ -1,5 +1,5 @@
-hash: c2b216f5bd9742fa4596a83e6251431eb859efe543cbebaf1abf228da74422c7
-updated: 2016-05-03T11:13:33.038854526-05:00
+hash: a1318b85bd98155b5d7f9e997ad10e2544df8864f380521545b797fd4ffcbec4
+updated: 2016-05-03T22:22:06.695223141-05:00
 imports:
 - name: github.com/armon/consul-api
   version: dcfedd50ed5334f96adee43fc88518a4f095e15c
@@ -13,6 +13,8 @@ imports:
   version: 30411dbcefb7a1da7e84f75530ad3abe4011b4f8
 - name: github.com/hashicorp/hcl
   version: 9a905a34e6280ce905da1a32344b25e81011197a
+- name: github.com/jackc/pgx
+  version: 7323d3f5a793f528f86ef7e24b4ceec8b1742c6a
 - name: github.com/kr/pretty
   version: add1dbc86daf0f983cd4a48ceb39deb95c729b67
 - name: github.com/kr/pty
@@ -21,6 +23,8 @@ imports:
   version: bb797dc4fb8320488f47bf11de07a733d7233e1f
 - name: github.com/magiconair/properties
   version: c265cfa48dda6474e208715ca93e987829f572f8
+- name: github.com/mattn/go-colorable
+  version: 45ce6a6f60010487dd0dbab368b5fbbed1c14ef0
 - name: github.com/mitchellh/mapstructure
   version: d2dd0262208475919e1a362f675cfc0e7c10e905
 - name: github.com/russross/blackfriday
@@ -49,6 +53,8 @@ imports:
   version: b776ec39b3e54652e09028aaaaac9757f4f8211a
 - name: golang.org/x/text
   version: bd1c9905f55d983c0cd0b15cf0c3e2fe860c8902
+- name: gopkg.in/inconshreveable/log15.v2
+  version: b105bd37f74e5d9dc7b6ad7806715c7a2b83fd3f
 - name: gopkg.in/yaml.v2
   version: a83829b6f1293c91addabc89d0571c246397bbf4
 devImports: []

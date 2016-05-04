@@ -14,7 +14,15 @@
 
 package cli
 
-import "github.com/spf13/cobra"
+import (
+	"strings"
+
+	"github.com/spf13/cobra"
+)
+
+// Seperator is a string of 80 characters that are used as markers for printouts
+// from the migration/creating/drop process.
+var Seperator = strings.Repeat("=", 80)
 
 // RootCmd is the core command other commands are attached to power the cobra
 // CLI library.

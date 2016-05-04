@@ -16,9 +16,11 @@ package cli
 
 import (
 	"fmt"
+	"os"
 
+	"github.com/bbuck/futura/adapters"
+	"github.com/bbuck/futura/config"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 func init() {
@@ -30,8 +32,23 @@ environment. If you would like to preview the query that will happen you can
 specify this as a dry run.`,
 		Run: func(cmd *cobra.Command, _ []string) {
 			dryRun := getBoolFlag(cmd, "dry-run")
+			dbName := config.DatabaseName()
+			if len(dbName) == 0 {
+				fmt.Fprintf(os.Stderr, "No database given to create!\n")
+				os.Exit(5)
+			}
+			fmt.Printf("%s\ncreating database %q ...\n%s\n", Seperator, dbName, Seperator)
 			if !dryRun {
-				fmt.Println(viper.GetString("env"))
+				if adapter, ok := adapters.Map[config.SelectedAdapter()]; ok {
+					err := adapter.CreateDatabase(config.DatabaseName())
+					if err != nil {
+						fmt.Fprintf(os.Stderr, "Failed to create database: %#v", err)
+						os.Exit(7)
+					}
+				} else {
+					fmt.Fprintf(os.Stderr, "There is no adapter defined for %q", config.SelectedAdapter())
+					os.Exit(6)
+				}
 			}
 		},
 	}

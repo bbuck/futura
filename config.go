@@ -14,21 +14,53 @@
 
 package main
 
-import "github.com/spf13/viper"
+import (
+	"fmt"
+
+	"github.com/spf13/viper"
+)
+
+// NoAdapterError provides a clean way to define which environment did not
+// specify an adapter. Adapters are required in order to load in the the
+// functionality required to modify the database type for the selected
+// environment.
+type NoAdapterError string
+
+// Error returns a string defining the environment that doesn't define an
+// adapter.
+func (n NoAdapterError) Error() string {
+	return fmt.Sprintf("There is no adapter configured for the environment %q", string(n))
+}
 
 func configure() error {
 	viper.SetConfigFile("./Futurafile")
 	viper.SetConfigType("toml")
 	configureEnvs()
+	configureFlags()
 	setDefaults()
-	err := viper.ReadInConfig()
+	if err := viper.ReadInConfig(); err != nil {
+		return err
+	}
 
-	return err
+	return validateConfig()
+}
+
+func validateConfig() error {
+	env := viper.GetString("env")
+	if !viper.IsSet(fmt.Sprintf("%s.adapter", env)) {
+		return NoAdapterError(env)
+	}
+
+	return nil
 }
 
 func configureEnvs() {
 	viper.SetEnvPrefix("futura")
 	viper.BindEnv("env")
+}
+
+func configureFlags() {
+	// empty for now
 }
 
 func setDefaults() {
