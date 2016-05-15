@@ -20,19 +20,63 @@ import (
 	"github.com/spf13/viper"
 )
 
-// SelectedAdapter returns the string identifier for the desired Adapter to use
-// for the current environment.
-func SelectedAdapter() string {
-	return viper.GetString(fmt.Sprintf("%s.adapter", viper.GetString("env")))
+// NoAdapterError provides a clean way to define which environment did not
+// specify an adapter. Adapters are required in order to load in the the
+// functionality required to modify the database type for the selected
+// environment.
+type NoAdapterError string
+
+// Error returns a string defining the environment that doesn't define an
+// adapter.
+func (n NoAdapterError) Error() string {
+	return fmt.Sprintf("There is no adapter configured for the environment %q", string(n))
 }
 
-// EnvSettings returns a map[string]interface{} containing the settings provided
-// along with the adapter for the specified environment.
-func EnvSettings() map[string]interface{} {
-	return viper.GetStringMap(viper.GetString("env"))
+// C is the config values for this project, which is just an exported Viper
+// instance.
+var C *viper.Viper
+
+func init() {
+	C = viper.New()
 }
 
-// DatabaseName returns the database name for the given environment.
-func DatabaseName() string {
-	return viper.GetString(fmt.Sprintf("%s.database", viper.GetString("env")))
+// Configure sets up the information necessary to load configuration data for
+// the library.
+func Configure() error {
+	C.SetConfigFile("./Futurafile")
+	C.SetConfigType("toml")
+	configureEnvs()
+	configureFlags()
+	setDefaults()
+	if err := C.ReadInConfig(); err != nil {
+		return err
+	}
+
+	return validateConfig()
+}
+
+// check configuration data for required fields
+func validateConfig() error {
+	env := C.GetString("env")
+	if !C.IsSet(fmt.Sprintf("%s.adapter", env)) {
+		return NoAdapterError(env)
+	}
+
+	return nil
+}
+
+// add evnironment links to the config object
+func configureEnvs() {
+	C.SetEnvPrefix("futura")
+	C.BindEnv("env")
+}
+
+// add flags to the config object
+func configureFlags() {
+	// empty for now
+}
+
+// set default values
+func setDefaults() {
+	C.SetDefault("env", "development")
 }

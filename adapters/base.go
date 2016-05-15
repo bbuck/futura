@@ -46,6 +46,7 @@ type Adapter interface {
 	RunRawMigration(string) error
 	RawFileExtension() string
 	RawFileParser(string) (*FileParser, error)
+	DefaultConfigString() string
 }
 
 // FileParser will break apart a raw query file to extract the up and down

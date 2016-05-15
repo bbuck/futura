@@ -64,6 +64,18 @@ func (p PgxAdapter) RawFileParser(filename string) (*FileParser, error) {
 	return NewFileParser(filename, "-- +MIGRAGE UP", "-- +MIGRATE DOWN")
 }
 
+// DefaultConfigString returns the basic (or extensive) settings to fill out
+// an automatically generated Futurafile.
+func (p PgxAdapter) DefaultConfigString() string {
+	return `adapter = "pgx"
+
+database = "your_project_dev"
+# hostname = "localhost"
+# port =
+# user = "username"
+# password = "password"`
+}
+
 // connect to postgres
 func pgxConnection(withDb bool) *pgx.Conn {
 	cfg := pgx.ConnConfig{Database: "postgres"}

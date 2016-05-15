@@ -19,10 +19,11 @@ import (
 	"os"
 
 	"github.com/bbuck/futura/cli"
+	"github.com/bbuck/futura/config"
 )
 
 func main() {
-	if err := configure(); err != nil {
+	if err := config.Configure(); err != nil {
 		if !os.IsNotExist(err) {
 			fmt.Fprintln(os.Stderr, err)
 			os.Exit(1)
