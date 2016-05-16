@@ -76,6 +76,12 @@ database = "your_project_dev"
 # password = "password"`
 }
 
+// Description returns a short descriptions for listing out the supported
+// adapters.
+func (p PgxAdapter) Description() string {
+	return "The pgx adapter uses jackc/pgx to provide an interface with the Postgres database server."
+}
+
 // connect to postgres
 func pgxConnection(withDb bool) *pgx.Conn {
 	cfg := pgx.ConnConfig{Database: "postgres"}

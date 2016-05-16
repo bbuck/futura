@@ -46,7 +46,13 @@ type Adapter interface {
 	RunRawMigration(string) error
 	RawFileExtension() string
 	RawFileParser(string) (*FileParser, error)
+}
+
+// AdapterDetails is an abstracted interface that allows an Adapter to opt-in
+// to providing additional details for users.
+type AdapterDetails interface {
 	DefaultConfigString() string
+	Description() string
 }
 
 // FileParser will break apart a raw query file to extract the up and down

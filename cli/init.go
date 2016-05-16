@@ -36,20 +36,21 @@ provides a jumping off point for the project. If no adapter is provided then
 futura will assume a default for you.`,
 		Run: func(cmd *cobra.Command, _ []string) {
 			_, err := os.Stat("./Futurafile")
-			if err != nil && !force {
-				fmt.Println("Futurafile already exists, try again with --force if you wish to overwrite it.")
+			if err == nil && !force {
+				fmt.Printf("Futurafile already exists, try again with --force if you wish to overwrite it.\n\n")
 				os.Exit(10)
-			} else if err != nil && force {
+			} else if err == nil && force {
 				os.Remove("./Futurafile")
 			}
 			file, err := os.Create("./Futurafile")
 			if err != nil {
-				fmt.Printf("Failed to create initial Futurafile: %s\n", err.Error())
+				fmt.Printf("Failed to create initial Futurafile: %s\n\n", err.Error())
 				os.Exit(11)
 			}
 			defer file.Close()
 
 			config.Futurafile(adapter, file)
+			fmt.Printf("Futurafile for adapter %q was successfully created.\n\n", adapter)
 		},
 	}
 
