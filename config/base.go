@@ -52,13 +52,15 @@ func Configure() error {
 		return err
 	}
 
-	return validateConfig()
+	return nil
 }
 
-// check configuration data for required fields
-func validateConfig() error {
+// Validate will validate that the configuration file has the minimum values
+// necessary to perfrom a more sophisticated way for select commands to require
+// configuration keys
+func Validate() error {
 	env := C.GetString("env")
-	if !C.IsSet(fmt.Sprintf("%s.adapter", env)) {
+	if !C.IsSet(SelectedAdapter()) {
 		return NoAdapterError(env)
 	}
 

@@ -46,11 +46,7 @@ func init() {
 `, info.Version.String())
 			for _, key := range keys {
 				adapter := adapters.Map[key]
-				if details, ok := adapter.(adapters.Details); ok {
-					log.RawPrintf(fmtString, key, details.Description())
-				} else {
-					log.RawPrintf(fmtString, key, "No description provided")
-				}
+				log.RawPrintf(fmtString, key, adapter.Description())
 			}
 			log.NewLine()
 		},

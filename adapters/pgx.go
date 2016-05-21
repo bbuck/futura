@@ -18,6 +18,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/bbuck/futura/log"
 	"github.com/jackc/pgx"
 	"github.com/spf13/cast"
 	"github.com/spf13/viper"
@@ -26,6 +27,12 @@ import (
 func init() {
 	Map["pgx"] = PgxAdapter{}
 }
+
+// migration constants
+const (
+	PgxUpComment   = "-- +MIGRATE UP"
+	PgxDownComment = "-- +MIGRATE DOWN"
+)
 
 // PgxAdapter uses Jack C's pgx Postgres Adapter to power migrations.
 type PgxAdapter struct{}
@@ -61,25 +68,42 @@ func (p PgxAdapter) RawFileExtension() string {
 // RawFileParser returns a FileParser object that will parse raw migration files
 // for the given Adapter.
 func (p PgxAdapter) RawFileParser(filename string) (*FileParser, error) {
-	return NewFileParser(filename, "-- +MIGRATE UP", "-- +MIGRATE DOWN")
+	return NewFileParser(filename, p.UpComment(), p.DownComment())
 }
 
 // DefaultConfigString returns the basic (or extensive) settings to fill out
 // an automatically generated Futurafile.
-func (p PgxAdapter) DefaultConfigString() string {
+func (PgxAdapter) DefaultConfigString() string {
 	return `adapter = "pgx"
+
+migration_path = "db/migrate"
 
 database = "your_project_dev"
 # hostname = "localhost"
-# port =
+# port = 5432
 # user = "username"
 # password = "password"`
 }
 
 // Description returns a short descriptions for listing out the supported
 // adapters.
-func (p PgxAdapter) Description() string {
-	return "The pgx adapter uses jackc/pgx to provide an interface with the Postgres database server."
+func (PgxAdapter) Description() string {
+	return "The pgx adapter uses jackc/pgx to connect to Postgres."
+}
+
+// CommentStart returns the -- that initiate a comment in postgres
+func (PgxAdapter) CommentStart() string {
+	return "--"
+}
+
+// UpComment returns the comment marking an up migration
+func (PgxAdapter) UpComment() string {
+	return "-- +MIGRATE UP"
+}
+
+// DownComment returns the comment marking a down migration
+func (PgxAdapter) DownComment() string {
+	return "-- +MIGRATE DOWN"
 }
 
 // connect to postgres
@@ -104,7 +128,7 @@ func pgxConnection(withDb bool) *pgx.Conn {
 
 	conn, err := pgx.Connect(cfg)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Failed to establish Postgres connection: %s\n", err.Error())
+		log.Errorf("Failed to establish Postgres connection: %s\n", err.Error())
 		os.Exit(4)
 	}
 

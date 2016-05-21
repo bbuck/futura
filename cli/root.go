@@ -15,8 +15,11 @@
 package cli
 
 import (
+	"os"
 	"strings"
 
+	"github.com/bbuck/futura/config"
+	"github.com/bbuck/futura/log"
 	"github.com/spf13/cobra"
 )
 
@@ -36,4 +39,12 @@ databases and table as well as managing migrations.`,
 
 func init() {
 	RootCmd.PersistentFlags().BoolP("dry-run", "D", false, "Run the command (if supported) as a dry run without making change")
+}
+
+func validateConfig() {
+	err := config.Validate()
+	if err != nil {
+		log.Errorln(err.Error())
+		os.Exit(100)
+	}
 }

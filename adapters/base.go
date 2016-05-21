@@ -46,11 +46,9 @@ type A interface {
 	RunRawMigration(string) error
 	RawFileExtension() string
 	RawFileParser(string) (*FileParser, error)
-}
-
-// Details is an abstracted interface that allows an Adapter to opt-in
-// to providing additional details for users.
-type Details interface {
+	UpComment() string
+	DownComment() string
+	CommentStart() string
 	DefaultConfigString() string
 	Description() string
 }

@@ -33,6 +33,11 @@ func DatabaseName() string {
 	return C.GetString(EnvKey("database"))
 }
 
+// MigrationsPath returns the migration path configured for the environment
+func MigrationsPath() string {
+	return C.GetString(EnvKey("migration_path"))
+}
+
 // EnvKey returns a new dot seperate key prepended with the environment.
 func EnvKey(keys ...string) string {
 	buf := bytes.NewBufferString(env())
