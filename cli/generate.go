@@ -34,6 +34,8 @@ var migrationTemplate = `{{ .UpComment }}
 {{ .CommentStart }} perform your down migration here
 `
 
+var migFolderPerm os.FileMode = 0755
+
 func init() {
 	RootCmd.AddCommand(&cobra.Command{
 		Use:   "generate",
@@ -52,7 +54,7 @@ path with a timestamped version value, ready for migrations to be made.`,
 				filename := args[0]
 				_, err := os.Stat(config.MigrationsPath())
 				if err != nil && os.IsNotExist(err) {
-					os.MkdirAll(config.MigrationsPath(), os.ModeDir)
+					os.MkdirAll(config.MigrationsPath(), migFolderPerm)
 				}
 				filename = fmt.Sprintf("%d.%s.%s", time.Now().UnixNano(), filename, adapter.RawFileExtension())
 

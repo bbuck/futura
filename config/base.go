@@ -60,7 +60,7 @@ func Configure() error {
 // configuration keys
 func Validate() error {
 	env := C.GetString("env")
-	if !C.IsSet(SelectedAdapter()) {
+	if !C.IsSet(EnvKey("adapter")) {
 		return NoAdapterError(env)
 	}
 
