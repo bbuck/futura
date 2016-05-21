@@ -21,7 +21,7 @@ import (
 
 // Map will map the user facing adpater names to an Adapter object that
 // will begin the process of powering the futura migration tool.
-var Map = make(map[string]Adapter)
+var Map = make(map[string]A)
 
 // MigrationDirection defines a type to represent the direction of a migration
 type MigrationDirection bool
@@ -38,9 +38,9 @@ const (
 // highly recommended.
 const VersionTableName = "futura_versions"
 
-// Adapter defines a base interface for entrypoints. This is bare minimum to
+// An A defines a base interface for entrypoints. This is bare minimum to
 // enable an Adapter to work with Futura via raw scripts.
-type Adapter interface {
+type A interface {
 	CreateDatabase(string) error
 	CreateVersionTable() error
 	RunRawMigration(string) error
@@ -48,9 +48,9 @@ type Adapter interface {
 	RawFileParser(string) (*FileParser, error)
 }
 
-// AdapterDetails is an abstracted interface that allows an Adapter to opt-in
+// Details is an abstracted interface that allows an Adapter to opt-in
 // to providing additional details for users.
-type AdapterDetails interface {
+type Details interface {
 	DefaultConfigString() string
 	Description() string
 }

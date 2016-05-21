@@ -41,6 +41,12 @@ func RawPrintf(format string, items ...interface{}) {
 	fmt.Printf(format, items...)
 }
 
+// NewLine is a literal wrapper for a plain call to Println (no args). The
+// existence of this method is as named, to create a new line.
+func NewLine() {
+	fmt.Println()
+}
+
 // Errorln uses Errorf for each item passed to it, assuming a format string of
 // "%s"
 func Errorln(items ...interface{}) {
