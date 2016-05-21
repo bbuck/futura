@@ -61,7 +61,7 @@ func (p PgxAdapter) RawFileExtension() string {
 // RawFileParser returns a FileParser object that will parse raw migration files
 // for the given Adapter.
 func (p PgxAdapter) RawFileParser(filename string) (*FileParser, error) {
-	return NewFileParser(filename, "-- +MIGRAGE UP", "-- +MIGRATE DOWN")
+	return NewFileParser(filename, "-- +MIGRATE UP", "-- +MIGRATE DOWN")
 }
 
 // DefaultConfigString returns the basic (or extensive) settings to fill out
