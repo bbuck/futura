@@ -74,15 +74,15 @@ func (p PgxAdapter) RawFileParser(filename string) (*FileParser, error) {
 // DefaultConfigString returns the basic (or extensive) settings to fill out
 // an automatically generated Futurafile.
 func (PgxAdapter) DefaultConfigString() string {
-	return `adapter = "pgx"
+	return `  adapter = "pgx"
 
-migration_path = "db/migrate"
+  migration_path = "db/migrate"
 
-database = "your_project_dev"
-# hostname = "localhost"
-# port = 5432
-# user = "username"
-# password = "password"`
+  database = "your_project_dev"
+  # hostname = "localhost"
+  # port = 5432
+  # user = "username"
+  # password = "password"`
 }
 
 // Description returns a short descriptions for listing out the supported

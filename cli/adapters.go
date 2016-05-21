@@ -41,9 +41,7 @@ func init() {
 			}
 			sort.Strings(keys)
 			fmtString := fmt.Sprintf("%%-%ds - %%s\n", longestKey)
-			log.RawPrintf(`Supported Adapters -- futura %s
--------------------------------------------------------------------------------
-`, info.Version.String())
+			log.RawPrintf("Supported Adapters -- futura %s\n%s\n", info.Version.String(), ThinSeperator)
 			for _, key := range keys {
 				adapter := adapters.Map[key]
 				log.RawPrintf(fmtString, key, adapter.Description())

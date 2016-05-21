@@ -15,10 +15,20 @@
 package cli
 
 import (
+	"os"
 	"strconv"
+	"strings"
 
+	"github.com/bbuck/futura/config"
+	"github.com/bbuck/futura/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
+)
+
+// various values used to generate output
+var (
+	Seperator     = strings.Repeat("=", 80)
+	ThinSeperator = strings.Repeat("-", 80)
 )
 
 func getFlag(cmd *cobra.Command, name string) *pflag.Flag {
@@ -39,4 +49,12 @@ func getBoolFlag(cmd *cobra.Command, name string) bool {
 	}
 
 	return false
+}
+
+func validateConfig() {
+	err := config.Validate()
+	if err != nil {
+		log.Errorln(err.Error())
+		os.Exit(100)
+	}
 }

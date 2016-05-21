@@ -15,9 +15,8 @@
 package cli
 
 import (
-	"fmt"
-
 	"github.com/bbuck/futura/info"
+	"github.com/bbuck/futura/log"
 	"github.com/spf13/cobra"
 )
 
@@ -26,7 +25,9 @@ func init() {
 		Use:   "version",
 		Short: "Print the version of Futura",
 		Run: func(_ *cobra.Command, _ []string) {
-			fmt.Printf("Futura Database Utility v%s\nCreated by Brandon Buck <lordizuriel@gmail.com>\n", info.Version)
+			log.RawPrintf(`Futura Database Utility v%s
+Created by Brandon Buck <lordizuriel@gmail.com>
+`, info.Version)
 		},
 	})
 }

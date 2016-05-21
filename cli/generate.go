@@ -38,8 +38,9 @@ var migFolderPerm os.FileMode = 0755
 
 func init() {
 	RootCmd.AddCommand(&cobra.Command{
-		Use:   "generate",
-		Short: "generate a migration file for the current adapter",
+		Aliases: []string{"gen"},
+		Use:     "generate NAME",
+		Short:   "Generate a migration file for the current adapter",
 		Long: `Given a name for a file, this will generate a new file in the migration
 path with a timestamped version value, ready for migrations to be made.`,
 		Run: func(_ *cobra.Command, args []string) {

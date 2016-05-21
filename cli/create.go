@@ -16,6 +16,7 @@ package cli
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/bbuck/futura/adapters"
@@ -31,13 +32,16 @@ func init() {
 environment. If you would like to preview the query that will happen you can
 specify this as a dry run.`,
 		Run: func(cmd *cobra.Command, _ []string) {
-			dryRun := getBoolFlag(cmd, "dry-run")
+			validateConfig()
+
 			dbName := config.DatabaseName()
 			if len(dbName) == 0 {
 				fmt.Fprintf(os.Stderr, "No database given to create!\n")
 				os.Exit(5)
 			}
-			fmt.Printf("%s\ncreating database %q ...\n%s\n", Seperator, dbName, Seperator)
+			log.Printf("%s\ncreating database %q ...\n%s", Seperator, dbName, Seperator)
+
+			dryRun := getBoolFlag(cmd, "dry-run")
 			if !dryRun {
 				if adapter, ok := adapters.Map[config.SelectedAdapter()]; ok {
 					err := adapter.CreateDatabase(config.DatabaseName())

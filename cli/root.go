@@ -14,18 +14,7 @@
 
 package cli
 
-import (
-	"os"
-	"strings"
-
-	"github.com/bbuck/futura/config"
-	"github.com/bbuck/futura/log"
-	"github.com/spf13/cobra"
-)
-
-// Seperator is a string of 80 characters that are used as markers for printouts
-// from the migration/creating/drop process.
-var Seperator = strings.Repeat("=", 80)
+import "github.com/spf13/cobra"
 
 // RootCmd is the core command other commands are attached to power the cobra
 // CLI library.
@@ -33,18 +22,10 @@ var RootCmd = cobra.Command{
 	Use:   "futura",
 	Short: "Futura is a DB management utility written in Go.",
 	Long: `Futura provides a means for managing the state of a database amoung team
-members. It's goal is to provide a means for creating/removing/truncating
-databases and table as well as managing migrations.`,
+members. It's goal is to provide a simple way to create, remove, truncate and
+modify databases and tables by breaking them into incremenatl changes.`,
 }
 
 func init() {
-	RootCmd.PersistentFlags().BoolP("dry-run", "D", false, "Run the command (if supported) as a dry run without making change")
-}
-
-func validateConfig() {
-	err := config.Validate()
-	if err != nil {
-		log.Errorln(err.Error())
-		os.Exit(100)
-	}
+	RootCmd.PersistentFlags().BoolP("dry-run", "D", false, "Run the command (if supported) as a dry run without making changes")
 }
