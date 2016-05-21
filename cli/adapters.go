@@ -20,6 +20,7 @@ import (
 
 	"github.com/bbuck/futura/adapters"
 	"github.com/bbuck/futura/info"
+	"github.com/bbuck/futura/log"
 	"github.com/spf13/cobra"
 )
 
@@ -40,15 +41,15 @@ func init() {
 			}
 			sort.Strings(keys)
 			fmtString := fmt.Sprintf("%%-%ds - %%s\n", longestKey)
-			fmt.Printf(`Supported Adapters -- futura %s
+			log.RawPrintf(`Supported Adapters -- futura %s
 -------------------------------------------------------------------------------
 `, info.Version.String())
 			for _, key := range keys {
 				adapter := adapters.Map[key]
 				if details, ok := adapter.(adapters.AdapterDetails); ok {
-					fmt.Printf(fmtString, key, details.Description())
+					log.RawPrintf(fmtString, key, details.Description())
 				} else {
-					fmt.Printf(fmtString, key, "No description provided")
+					log.RawPrintf(fmtString, key, "No description provided")
 				}
 			}
 			fmt.Println()

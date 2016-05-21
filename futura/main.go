@@ -15,23 +15,22 @@
 package main
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/bbuck/futura/cli"
 	"github.com/bbuck/futura/config"
+	"github.com/bbuck/futura/log"
 )
 
 func main() {
 	if err := config.Configure(); err != nil {
 		if !os.IsNotExist(err) {
-			fmt.Fprintln(os.Stderr, err)
+			log.Errorln(err)
 			os.Exit(1)
 		}
 	}
 
 	if err := cli.RootCmd.Execute(); err != nil {
-		fmt.Fprintln(os.Stderr, err)
 		os.Exit(2)
 	}
 }
