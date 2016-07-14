@@ -53,9 +53,13 @@ path with a timestamped version value, ready for migrations to be made.`,
 
 			if adapter, ok := adapters.Map[config.SelectedAdapter()]; ok {
 				filename := args[0]
-				_, err := os.Stat(config.MigrationsPath())
+				info, err := os.Stat(config.MigrationsPath())
 				if err != nil && os.IsNotExist(err) {
 					os.MkdirAll(config.MigrationsPath(), migFolderPerm)
+				}
+				if !info.IsDir() {
+					log.Errorln("The target for migrations_path already exists, but is not a directory.")
+					os.Exit(23)
 				}
 				filename = fmt.Sprintf("%d.%s.%s", time.Now().UnixNano(), filename, adapter.RawFileExtension())
 
